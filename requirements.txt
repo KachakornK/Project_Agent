@@ -1,3 +1,2 @@
-requests
-pydantic
-python-dotenv
+getmac==0.9.5
+psutil==7.0.0
