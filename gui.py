@@ -1,8 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, scrolledtext
 from discord_webhook import send_to_discord
 from datetime import datetime
 import json
+import os
 
 class SystemInfoGUI:
     def __init__(self, system_info):
@@ -21,6 +22,7 @@ class SystemInfoGUI:
         self._create_system_tab()
         self._create_location_tab()
         self._create_software_tab()
+        self._create_output_tab()  # เพิ่มแท็บสำหรับแสดง output.txt
         
         # สร้างปุ่มควบคุม
         self._create_buttons()
@@ -179,6 +181,53 @@ class SystemInfoGUI:
                 prog.get('last_patch_update', '')
             ))
     
+    def _create_output_tab(self):
+        """สร้างแท็บสำหรับแสดงเนื้อหาของไฟล์ output.txt"""
+        tab = ttk.Frame(self.notebook)
+        self.notebook.add(tab, text="ข้อมูล Output")
+        
+        # Frame สำหรับปุ่ม Copy All
+        btn_frame = ttk.Frame(tab)
+        btn_frame.pack(fill='x', padx=10, pady=5)
+        
+        # ปุ่มคัดลอกทั้งหมด
+        copy_btn = ttk.Button(
+        btn_frame, 
+        text="📋 คัดลอกทั้งหมด", 
+        command=self._copy_all_output
+        )
+        copy_btn.pack(side="left", padx=5, pady=5)
+        
+        # Text widget สำหรับแสดงเนื้อหา
+        self.output_text = scrolledtext.ScrolledText(
+            tab,
+            wrap=tk.WORD,
+            font=('Tahoma', 10),
+            padx=10,
+            pady=10
+        )
+        self.output_text.pack(fill='both', expand=True, padx=10, pady=5)
+        
+        # โหลดข้อมูลหากไฟล์มีอยู่แล้ว
+        if os.path.exists('output.txt'):
+            self._load_output_file()
+    
+    def _load_output_file(self):
+        """โหลดเนื้อหาจากไฟล์ output.txt และแสดงใน Text widget"""
+        try:
+            with open('output.txt', 'r', encoding='utf-8') as f:
+                content = f.read()
+                self.output_text.delete(1.0, tk.END)
+                self.output_text.insert(tk.END, content)
+        except Exception as e:
+            messagebox.showerror("ข้อผิดพลาด", f"ไม่สามารถอ่านไฟล์ output.txt: {str(e)}")
+    
+    def _copy_all_output(self):
+        """คัดลอกเนื้อหาทั้งหมดใน Text widget ไปยังคลิปบอร์ด"""
+        self.root.clipboard_clear()
+        self.root.clipboard_append(self.output_text.get(1.0, tk.END))
+        messagebox.showinfo("สำเร็จ", "คัดลอกเนื้อหาทั้งหมดไปยังคลิปบอร์ดแล้ว")
+    
     def _create_buttons(self):
         btn_frame = ttk.Frame(self.root)
         btn_frame.pack(fill='x', padx=10, pady=10)
@@ -207,6 +256,9 @@ class SystemInfoGUI:
             all_data = self.system_info.get_all_info()
             with open('output.txt', 'w', encoding='utf-8') as f:
                 json.dump(all_data, f, ensure_ascii=False, indent=4)
+            
+            # โหลดข้อมูลใหม่ในแท็บ output
+            self._load_output_file()
             
             # ส่งข้อมูลไปยัง Discord (ถ้ามี)
             discord_success = True
