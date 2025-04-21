@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
-from discord_webhook import send_to_discord
+from webhook import send_to_webhook
 from datetime import datetime
 import json
 import os
@@ -197,7 +197,7 @@ class SystemInfoGUI:
         command=self._copy_all_output
         )
         copy_btn.pack(side="left", padx=5, pady=5)
-        
+
         # Text widget สำหรับแสดงเนื้อหา
         self.output_text = scrolledtext.ScrolledText(
             tab,
@@ -250,41 +250,40 @@ class SystemInfoGUI:
         # บันทึกข้อมูลตำแหน่ง
         location_info = {field: entry.get() for field, entry in self.entries.items()}
         self.system_info.save_config(location_info)
-        
+
         try:
             # บันทึกข้อมูลทั้งหมดเป็นไฟล์ JSON
             all_data = self.system_info.get_all_info()
             with open('output.txt', 'w', encoding='utf-8') as f:
                 json.dump(all_data, f, ensure_ascii=False, indent=4)
-            
+
             # โหลดข้อมูลใหม่ในแท็บ output
             self._load_output_file()
-            
-            # ส่งข้อมูลไปยัง Discord (ถ้ามี)
-            discord_success = True
-            if hasattr(self, 'send_to_discord'):
-                discord_success = send_to_discord(all_data)
-            
-            if discord_success:
+
+            # ส่งข้อมูลไปยัง Webhook
+            webhook_success = send_to_webhook(all_data)
+
+            if webhook_success:
                 messagebox.showinfo(
-                    "สำเร็จ", 
-                    "บันทึกข้อมูลเรียบร้อย\n" +
-                    "ไฟล์ output.txt ถูกสร้างแล้ว\n" +
-                    "ส่งข้อมูลไปยัง Discord เรียบร้อย"
+                    "สำเร็จ",
+                    "บันทึกข้อมูลเรียบร้อย\n"
+                    "ไฟล์ output.txt ถูกสร้างแล้ว\n"
+                    "ส่งข้อมูลเรียบร้อย"
                 )
             else:
                 messagebox.showinfo(
-                    "สำเร็จบางส่วน", 
-                    "บันทึกข้อมูลเรียบร้อย\n" +
-                    "ไฟล์ output.txt ถูกสร้างแล้ว\n" +
-                    "แต่ไม่สามารถส่งข้อมูลไปยัง Discord ได้"
+                    "สำเร็จบางส่วน",
+                    "บันทึกข้อมูลเรียบร้อย\n"
+                    "ไฟล์ output.txt ถูกสร้างแล้ว\n"
+                    "แต่ไม่สามารถส่งข้อมูลไปยัง Webhook ได้"
                 )
-                
+
         except Exception as e:
             messagebox.showerror(
-                "ข้อผิดพลาด", 
+                "ข้อผิดพลาด",
                 f"เกิดข้อผิดพลาดขณะบันทึกข้อมูล:\n{str(e)}"
             )
+
     
     def run(self):
         self.root.mainloop()
