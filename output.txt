@@ -7,7 +7,7 @@
         "ram": 6,
         "hard_disk": 474.72,
         "os": "Windows 11",
-        "created_at": "2025-04-21 11:03:08"
+        "created_at": "2025-05-28 09:56:53"
     },
     "installed_software": [
         {
@@ -27,6 +27,14 @@
             "last_patch_update": ""
         },
         {
+            "name": "Docker Desktop",
+            "version": "4.40.0",
+            "publisher": "Docker Inc.",
+            "license_expiry": "",
+            "install_date": "",
+            "last_patch_update": ""
+        },
+        {
             "name": "Git",
             "version": "2.47.1.2",
             "publisher": "The Git Development Community",
@@ -36,7 +44,7 @@
         },
         {
             "name": "Microsoft Office Home and Student 2021 - en-us",
-            "version": "16.0.18623.20178",
+            "version": "16.0.18730.20186",
             "publisher": "Microsoft Corporation",
             "license_expiry": "",
             "install_date": "",
@@ -52,16 +60,8 @@
         },
         {
             "name": "Microsoft OneDrive",
-            "version": "25.051.0317.0003",
+            "version": "25.080.0427.0003",
             "publisher": "Microsoft Corporation",
-            "license_expiry": "",
-            "install_date": "",
-            "last_patch_update": ""
-        },
-        {
-            "name": "Riot Vanguard",
-            "version": "",
-            "publisher": "Riot Games, Inc.",
             "license_expiry": "",
             "install_date": "",
             "last_patch_update": ""
@@ -107,6 +107,14 @@
             "last_patch_update": ""
         },
         {
+            "name": "Windows Subsystem for Linux",
+            "version": "2.4.13.0",
+            "publisher": "Microsoft Corporation",
+            "license_expiry": "",
+            "install_date": "2025-04-24",
+            "last_patch_update": ""
+        },
+        {
             "name": "Python 3.12.2 Core Interpreter (64-bit)",
             "version": "3.12.2150.0",
             "publisher": "Python Software Foundation",
@@ -123,19 +131,11 @@
             "last_patch_update": ""
         },
         {
-            "name": "Blender",
-            "version": "4.3.1",
-            "publisher": "Blender Foundation",
-            "license_expiry": "",
-            "install_date": "2024-12-17",
-            "last_patch_update": ""
-        },
-        {
             "name": "Office 16 Click-to-Run Licensing Component",
-            "version": "16.0.18623.20178",
+            "version": "16.0.18730.20186",
             "publisher": "Microsoft Corporation",
             "license_expiry": "",
-            "install_date": "2025-04-16",
+            "install_date": "2025-05-26",
             "last_patch_update": ""
         },
         {
@@ -172,10 +172,10 @@
         },
         {
             "name": "Adobe Acrobat (64-bit)",
-            "version": "25.001.20435",
+            "version": "25.001.20474",
             "publisher": "Adobe",
             "license_expiry": "",
-            "install_date": "2025-03-21",
+            "install_date": "2025-05-04",
             "last_patch_update": ""
         },
         {
@@ -251,6 +251,14 @@
             "last_patch_update": ""
         },
         {
+            "name": "PuTTY release 0.83 (64-bit)",
+            "version": "0.83.0.0",
+            "publisher": "Simon Tatham",
+            "license_expiry": "",
+            "install_date": "2025-04-24",
+            "last_patch_update": ""
+        },
+        {
             "name": "Python 3.12.2 Development Libraries (64-bit)",
             "version": "3.12.2150.0",
             "publisher": "Python Software Foundation",
@@ -260,26 +268,34 @@
         },
         {
             "name": "Brave",
-            "version": "135.1.77.100",
+            "version": "136.1.78.102",
             "publisher": "Brave Software Inc",
             "license_expiry": "",
-            "install_date": "2025-04-17",
+            "install_date": "2025-05-16",
+            "last_patch_update": ""
+        },
+        {
+            "name": "FileZilla 3.69.1",
+            "version": "3.69.1",
+            "publisher": "Tim Kosse",
+            "license_expiry": "",
+            "install_date": "",
             "last_patch_update": ""
         },
         {
             "name": "Microsoft Edge",
-            "version": "135.0.3179.85",
+            "version": "136.0.3240.92",
             "publisher": "Microsoft Corporation",
             "license_expiry": "",
-            "install_date": "2025-04-19",
+            "install_date": "2025-05-26",
             "last_patch_update": ""
         },
         {
             "name": "Microsoft Edge WebView2 Runtime",
-            "version": "135.0.3179.85",
+            "version": "136.0.3240.92",
             "publisher": "Microsoft Corporation",
             "license_expiry": "",
-            "install_date": "2025-04-19",
+            "install_date": "2025-05-26",
             "last_patch_update": ""
         },
         {
@@ -348,10 +364,10 @@
         },
         {
             "name": "Lenovo Now",
-            "version": "4.2.1.1",
+            "version": "4.2.2.25",
             "publisher": "Lenovo",
             "license_expiry": "",
-            "install_date": "2025-03-12",
+            "install_date": "2025-05-15",
             "last_patch_update": ""
         },
         {
@@ -383,7 +399,7 @@
             "version": "1.0",
             "publisher": "Google\\Chrome",
             "license_expiry": "",
-            "install_date": "2024-08-30",
+            "install_date": "2025-05-15",
             "last_patch_update": ""
         },
         {
@@ -443,24 +459,16 @@
             "last_patch_update": ""
         },
         {
-            "name": "Beekeeper Studio 5.0.9",
-            "version": "5.0.9",
-            "publisher": "Beekeeper Studio Team",
-            "license_expiry": "",
-            "install_date": "",
-            "last_patch_update": ""
-        },
-        {
             "name": "Figma",
-            "version": "124.7.4",
+            "version": "125.3.6",
             "publisher": "Figma, Inc.",
             "license_expiry": "",
-            "install_date": "2024-12-12",
+            "install_date": "2025-04-24",
             "last_patch_update": ""
         },
         {
             "name": "Figma Agent",
-            "version": "124.3.3",
+            "version": "125.3.6",
             "publisher": "Figma, Inc.",
             "license_expiry": "",
             "install_date": "",
@@ -468,15 +476,15 @@
         },
         {
             "name": "Google Chrome",
-            "version": "135.0.7049.96",
+            "version": "136.0.7103.114",
             "publisher": "Google LLC",
             "license_expiry": "",
-            "install_date": "2025-04-16",
+            "install_date": "2025-05-16",
             "last_patch_update": ""
         },
         {
             "name": "Grammarly for Windows",
-            "version": "1.2.153.1650",
+            "version": "1.2.162.1668",
             "publisher": "Grammarly",
             "license_expiry": "",
             "install_date": "",
@@ -531,22 +539,6 @@
             "last_patch_update": ""
         },
         {
-            "name": "VALORANT",
-            "version": "",
-            "publisher": "Riot Games, Inc",
-            "license_expiry": "",
-            "install_date": "",
-            "last_patch_update": ""
-        },
-        {
-            "name": "Roblox Player for mook",
-            "version": "",
-            "publisher": "Roblox Corporation",
-            "license_expiry": "",
-            "install_date": "2024-12-30",
-            "last_patch_update": ""
-        },
-        {
             "name": "Roblox Studio for mook",
             "version": "",
             "publisher": "Roblox Corporation",
@@ -564,10 +556,10 @@
         },
         {
             "name": "Microsoft Visual Studio Code (User)",
-            "version": "1.99.3",
+            "version": "1.100.2",
             "publisher": "Microsoft Corporation",
             "license_expiry": "",
-            "install_date": "2025-04-19",
+            "install_date": "2025-05-16",
             "last_patch_update": ""
         },
         {

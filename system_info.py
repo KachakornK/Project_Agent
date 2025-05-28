@@ -21,7 +21,7 @@ class SystemInfo:
         total_disk = sum(disk['total'] for disk in self._get_disk_info().values())
         
         self.system_data = {
-            'pc_info': {  # เปลี่ยนจาก 'computer_info' เป็น 'pc_info' เพื่อให้ตรงกับ get_all_info()
+            'pc_info': { 
                 'host_name': socket.gethostname(),
                 'mac_address': get_mac_address(),
                 'ip_address': socket.gethostbyname(socket.gethostname()),
@@ -31,7 +31,7 @@ class SystemInfo:
                 'os': f"{platform.system()} {platform.release()}",
                 'created_at': self.created_at
             },
-            'installed_software': self._get_installed_software_info(),  # เปลี่ยนจาก 'get_installed_software'
+            'installed_software': self._get_installed_software_info(),  
             'location_info': self.config.load()
         }
 
