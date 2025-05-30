@@ -2,27 +2,34 @@ import requests
 
 class WebhookManager:
     def __init__(self):
-        self.webhook_urls = {
-            "Default": "https://webhook.site/124198c3-ba4b-4596-9e85-e3f761262150",
-            "Backup": "https://webhook-test.com/a6acc63c1a85a1cc35fbce2da7d7a992"
-        }
-        self.selected_url = None
-
+        self.webhook_url = None
+    
     def set_webhook_url(self, url):
-        self.selected_url = url
-
+        """ตั้งค่า URL และตรวจสอบความถูกต้อง"""
+        if url and self._validate_url(url):
+            self.webhook_url = url
+            return True
+        return False
+    
+    def _validate_url(self, url):
+        """ตรวจสอบว่า URL ถูกต้อง"""
+        return url.startswith(('http://', 'https://'))
+    
     def send_to_webhook(self, data):
-        if not self.selected_url:
+        """ส่งข้อมูลไปยัง Webhook"""
+        if not self.webhook_url:
+            print("ไม่มี Webhook URL ที่กำหนด")
             return False
             
-        headers = {'Content-Type': 'application/json'}
-        
         try:
-            response = requests.post(self.selected_url, json=data, headers=headers)
+            # ส่วนส่งข้อมูลเดิมของคุณ
+            response = requests.post(
+                self.webhook_url,
+                json=data,
+                headers={'Content-Type': 'application/json'},
+                timeout=10
+            )
             return response.status_code == 200
         except Exception as e:
-            print(f"Webhook error: {e}")
+            print(f"ส่งข้อมูลไม่สำเร็จ: {str(e)}")
             return False
-
-    def get_webhook_urls(self):
-        return self.webhook_urls

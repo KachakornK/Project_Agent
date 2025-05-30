@@ -7,7 +7,7 @@
         "ram": 6,
         "hard_disk": 474.72,
         "os": "Windows 11",
-        "created_at": "2025-05-29 12:00:32"
+        "created_at": "2025-05-30 13:24:19"
     },
     "installed_software": [
         {
@@ -268,10 +268,10 @@
         },
         {
             "name": "Brave",
-            "version": "136.1.78.102",
+            "version": "137.1.79.118",
             "publisher": "Brave Software Inc",
             "license_expiry": "",
-            "install_date": "2025-05-16",
+            "install_date": "2025-05-30",
             "last_patch_update": ""
         },
         {
@@ -484,7 +484,7 @@
         },
         {
             "name": "Grammarly for Windows",
-            "version": "1.2.162.1668",
+            "version": "1.2.163.1671",
             "publisher": "Grammarly",
             "license_expiry": "",
             "install_date": "",
@@ -571,5 +571,11 @@
             "last_patch_update": ""
         }
     ],
-    "location_info": {}
+    "location_info": {
+        "location": "หนองแค",
+        "building": "1",
+        "floor": "2",
+        "department": "แม่และเด็ก",
+        "webhook_url": "https://webhook.site/124198c3-ba4b-4596-9e85-e3f761262150"
+    }
 }

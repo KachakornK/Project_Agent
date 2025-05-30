@@ -9,6 +9,10 @@ class SystemInfoGUI:
     def __init__(self, system_info):
         self.system_info = system_info
         self.webhook_manager = WebhookManager()
+         # โหลด URL ที่บันทึกไว้และตั้งค่าให้ WebhookManager ทันที
+        saved_url = self.system_info.get_webhook_url()
+        if saved_url:
+            self.webhook_manager.set_webhook_url(saved_url)
         self.root = tk.Tk()
         self.root.title("ระบบตรวจสอบข้อมูลคอมพิวเตอร์")
         self.root.geometry("1000x750")  # ขยายขนาดหน้าต่างเล็กน้อย
@@ -29,147 +33,94 @@ class SystemInfoGUI:
         self._configure_styles()
 
     def _create_webhook_tab(self):
-        """สร้างแท็บสำหรับเลือก Webhook URL"""
+        """สร้างแท็บสำหรับกรอก Webhook URL"""
         tab = ttk.Frame(self.notebook)
         self.notebook.add(tab, text="ตั้งค่า Webhook")
-        
+
         main_frame = ttk.Frame(tab)
         main_frame.pack(fill='both', expand=True, padx=10, pady=10)
-        
-        # Frame สำหรับเลือก URL
-        url_frame = ttk.LabelFrame(main_frame, text="เลือก Webhook URL")
+
+        # Frame สำหรับกรอก URL
+        url_frame = ttk.LabelFrame(main_frame, text="Webhook URL")
         url_frame.pack(fill='x', padx=10, pady=10)
-        
-        # Combobox สำหรับเลือก URL
-        ttk.Label(url_frame, text="URL ที่มีอยู่:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
-        
-        self.url_combobox = ttk.Combobox(
+
+        # ช่องกรอก URL
+        ttk.Label(url_frame, text="URL:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+
+        self.url_entry = ttk.Entry(
             url_frame,
-            values=list(self.webhook_manager.get_webhook_urls().keys()),
-            state="readonly",
-            font=('Tahoma', 10)
+            font=('Tahoma', 10),
+            width=50
         )
-        self.url_combobox.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-        self.url_combobox.current(0)  # เลือกค่าแรกเป็นค่าเริ่มต้น
-        
-        # ปุ่มเพิ่ม URL ใหม่
-        add_btn = ttk.Button(
+        self.url_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+
+        # โหลด URL ที่บันทึกไว้ก่อนหน้า (ถ้ามี)
+        saved_url = self.system_info.get_webhook_url()
+
+        # ปุ่มบันทึก URL
+        save_btn = ttk.Button(
             url_frame,
-            text="+ เพิ่ม URL ใหม่",
-            command=self._add_new_url,
-            style='White.TButton'  # เปลี่ยนจาก 'Accent.TButton' เป็น 'White.TButton'
+            text="บันทึก URL",
+            command=self._save_webhook_url,
+            style='White.TButton'
         )
-        add_btn.grid(row=0, column=2, padx=5, pady=5)
-        
-        # Frame สำหรับแสดง URL ที่เลือก
-        selected_frame = ttk.LabelFrame(main_frame, text="URL ที่เลือกในปัจจุบัน")
+        save_btn.grid(row=0, column=2, padx=5, pady=5)
+
+        # Frame สำหรับแสดง URL ที่บันทึก
+        selected_frame = ttk.LabelFrame(main_frame, text="URL ที่บันทึกในปัจจุบัน")
         selected_frame.pack(fill='x', padx=10, pady=10)
-        
+
+        # สร้าง Label สำหรับแสดง URL ที่บันทึก
         self.selected_url_label = ttk.Label(
             selected_frame,
-            text=self.webhook_manager.get_webhook_urls()["Default"],
+            text=saved_url if saved_url else "ยังไม่ได้กำหนด URL",
             wraplength=800,
             foreground="#0066CC",
             font=('Tahoma', 10)
         )
         self.selected_url_label.pack(fill='x', padx=10, pady=10)
-        
+
+        # ใส่ค่าในช่องกรอก URL หลังจากสร้างทุกอย่างแล้ว
+        if saved_url:
+            self.url_entry.insert(0, saved_url)
+
         # ข้อความแนะนำ
         note_frame = ttk.Frame(main_frame)
         note_frame.pack(fill='x', padx=10, pady=10)
-        
+
         note_label = ttk.Label(
             note_frame,
-            text="หมายเหตุ: ระบบจะส่งข้อมูลไปยัง URL ที่เลือกเมื่อกดปุ่ม 'บันทึกข้อมูล'",
+            text="หมายเหตุ: ระบบจะส่งข้อมูลไปยัง URL ที่กรอกเมื่อกดปุ่ม 'บันทึกข้อมูล'",
             foreground="#666666",
             font=('Tahoma', 9)
         )
         note_label.pack()
-        
-        # อัปเดต URL ที่เลือกเมื่อมีการเปลี่ยนแปลง
-        self.url_combobox.bind("<<ComboboxSelected>>", self._update_selected_url)
-        self._update_selected_url()
+    def _save_webhook_url(self):
+        """บันทึก URL ที่ผู้ใช้กรอกลงในไฟล์ config"""
+        url = self.url_entry.get().strip()
 
-    def _update_selected_url(self, event=None):
-        """อัปเดต URL ที่เลือก"""
-        selected_key = self.url_combobox.get()
-        urls = self.webhook_manager.get_webhook_urls()
-        if selected_key in urls:
-            url = urls[selected_key]
-            self.webhook_manager.set_webhook_url(url)
-            self.selected_url_label.config(text=url)
+        if not url:
+            messagebox.showerror("ข้อผิดพลาด", "กรุณากรอก URL")
+            return
+        
+        if not url.startswith(('http://', 'https://')):
+            messagebox.showerror("ข้อผิดพลาด", "URL ต้องเริ่มต้นด้วย http:// หรือ https://")
+            return
 
-    def _add_new_url(self):
-        """เพิ่ม URL ใหม่"""
-        dialog = tk.Toplevel(self.root)
-        dialog.title("เพิ่ม Webhook URL ใหม่")
-        dialog.geometry("500x200")
-        dialog.resizable(False, False)
-        
-        # ทำให้ dialog อยู่กลางหน้าจอ
-        self._center_window(dialog)
-        
-        main_frame = ttk.Frame(dialog)
-        main_frame.pack(fill='both', expand=True, padx=20, pady=20)
-        
-        ttk.Label(main_frame, text="ชื่อ URL:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
-        name_entry = ttk.Entry(main_frame, font=('Tahoma', 10))
-        name_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-        
-        ttk.Label(main_frame, text="URL:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
-        url_entry = ttk.Entry(main_frame, font=('Tahoma', 10))
-        url_entry.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-        
-        def save_new_url():
-            name = name_entry.get().strip()
-            url = url_entry.get().strip()
+        try:
+            # บันทึก URL โดยใช้ SystemInfo
+            self.system_info.save_webhook_url(url)
             
-            if not name or not url:
-                messagebox.showerror("ข้อผิดพลาด", "กรุณากรอกชื่อและ URL ให้ครบถ้วน")
-                return
-                
-            if not url.startswith(('http://', 'https://')):
-                messagebox.showerror("ข้อผิดพลาด", "URL ต้องเริ่มต้นด้วย http:// หรือ https://")
-                return
-                
-            self.webhook_manager.get_webhook_urls()[name] = url
-            self.url_combobox['values'] = list(self.webhook_manager.get_webhook_urls().keys())
-            self.url_combobox.set(name)  # เลือก URL ใหม่ที่เพิ่งเพิ่ม
-            dialog.destroy()
-            self._update_selected_url()
-        
-        btn_frame = ttk.Frame(main_frame)
-        btn_frame.grid(row=2, column=0, columnspan=2, pady=10)
-        
-        ttk.Button(
-            btn_frame, 
-            text="บันทึก", 
-            command=save_new_url,
-            style='White.TButton'
-        ).pack(side="left", padx=10)
-        
-        ttk.Button(
-            btn_frame, 
-            text="ยกเลิก", 
-            command=dialog.destroy
-        ).pack(side="right", padx=10)
-        
-        main_frame.columnconfigure(1, weight=1)
-
-    def _center_window(self, window):
-        """จัดหน้าต่างให้อยู่กลางจอ"""
-        window.update_idletasks()
-        width = window.winfo_width()
-        height = window.winfo_height()
-        x = (window.winfo_screenwidth() // 2) - (width // 2)
-        y = (window.winfo_screenheight() // 2) - (height // 2)
-        window.geometry(f'{width}x{height}+{x}+{y}')
-        
-        # สร้างปุ่มควบคุม
-        # self._create_buttons()
-        
-        # กำหนดสไตล์ทั่วไป
-        self._configure_styles()
+            # อัปเดตใน Webhook Manager และ UI
+            if hasattr(self, 'webhook_manager'):
+                self.webhook_manager.set_webhook_url(url)
+            
+            if hasattr(self, 'selected_url_label'):
+                self.selected_url_label.config(text=url)
+            
+            messagebox.showinfo("สำเร็จ", "บันทึก URL เรียบร้อยแล้ว")
+        except Exception as e:
+            messagebox.showerror("ข้อผิดพลาด", f"ไม่สามารถบันทึก URL: {str(e)}")
     
     def _configure_styles(self):
         

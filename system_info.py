@@ -76,6 +76,7 @@ class SystemInfo:
             'pc_info': self.system_data['pc_info'],
             'installed_software': self.system_data['installed_software'],
             'location_info': self.system_data['location_info']
+
         }
 
     def save_config(self, location_info):
@@ -96,5 +97,20 @@ class SystemInfo:
         self.config.save(location_info)
         # บันทึกเป็น JSON เมื่อมีการบันทึก config
         self.save_to_json_file()
+
+    def get_webhook_url(self):
+        """ดึง Webhook URL จาก config"""
+        return self.config.get_webhook_url()
+    
+    def save_webhook_url(self, url):
+        """บันทึก Webhook URL"""
+        self.config.save_webhook_url(url)
+
+    def get_webhook_url(self):
+        """ดึง URL และตรวจสอบความถูกต้อง"""
+        url = self.config.get_webhook_url()
+        if url and url.startswith(('http://', 'https://')):
+            return url
+        return None
 
     
