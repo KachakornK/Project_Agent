@@ -7,7 +7,7 @@
         "ram": 6,
         "hard_disk": 474.72,
         "os": "Windows 11",
-        "created_at": "2025-05-28 09:56:53"
+        "created_at": "2025-05-29 12:00:32"
     },
     "installed_software": [
         {
@@ -571,10 +571,5 @@
             "last_patch_update": ""
         }
     ],
-    "location_info": {
-        "location": "Nongkhea Hospital",
-        "building": "1",
-        "floor": "2",
-        "department": "psychiatry"
-    }
+    "location_info": {}
 }
