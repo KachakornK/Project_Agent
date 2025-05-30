@@ -22,7 +22,6 @@ class WebhookManager:
             return False
             
         try:
-            # ส่วนส่งข้อมูลเดิมของคุณ
             response = requests.post(
                 self.webhook_url,
                 json=data,
